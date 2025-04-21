@@ -12,7 +12,7 @@ st_autorefresh(interval=5000, key="refresh")
 # Load JSON data
 @st.cache_data(ttl=5)
 def load_data():
-    df = pd.read_json("patient_vitals_24h.json")
+    df = pd.read_json("https://drive.google.com/file/d/1G_YPaiBUsmjteaXvADJyr0t3g46OoF-K/view?usp=drive_link")
     df["timestamp"] = pd.to_datetime(df["timestamp"])
     return df
 
