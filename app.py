@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from streamlit_autorefresh import st_autorefresh
+import requests
 
 # Set page layout
 st.set_page_config(page_title="Patient Monitoring", layout="wide")
@@ -12,7 +13,9 @@ st_autorefresh(interval=5000, key="refresh")
 # Load JSON data
 @st.cache_data(ttl=5)
 def load_data():
-    df = pd.read_json("https://drive.google.com/file/d/1G_YPaiBUsmjteaXvADJyr0t3g46OoF-K/view?usp=drive_link")
+    url = "https://your-storage-link.com/patient_vitals_24h.json"
+    data = requests.get(url).json()
+    df = pd.DataFrame(data)
     df["timestamp"] = pd.to_datetime(df["timestamp"])
     return df
 
