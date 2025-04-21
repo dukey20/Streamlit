@@ -15,6 +15,13 @@ st_autorefresh(interval=5000, key="refresh")
 def load_data():
     url = "https://drive.google.com/uc?export=download&id=1G_YPaiBUsmjteaXvADJyr0t3g46OoF-K"
     response = requests.get(url)
+    
+    # Check what we're getting back
+    if "application/json" not in response.headers.get("Content-Type", ""):
+        st.error("❌ The file did not return valid JSON. Google Drive may be returning HTML or a warning page.")
+        st.text(response.text[:500])  # Show part of the HTML/response
+        st.stop()
+
     data = response.json()
     df = pd.DataFrame(data)
     df["timestamp"] = pd.to_datetime(df["timestamp"])
