@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.express as px
 from streamlit_autorefresh import st_autorefresh
 import requests
+import gdown
 
 # Set page layout
 st.set_page_config(page_title="Patient Monitoring", layout="wide")
@@ -13,17 +14,13 @@ st_autorefresh(interval=5000, key="refresh")
 # Load JSON data
 @st.cache_data(ttl=5)
 def load_data():
-    url = "https://drive.google.com/uc?export=download&id=1G_YPaiBUsmjteaXvADJyr0t3g46OoF-K"
-    response = requests.get(url)
-    
-    # Check what we're getting back
-    if "application/json" not in response.headers.get("Content-Type", ""):
-        st.error("❌ The file did not return valid JSON. Google Drive may be returning HTML or a warning page.")
-        st.text(response.text[:500])  # Show part of the HTML/response
-        st.stop()
+    file_id = "1G_YPaiBUsmjteaXvADJyr0t3g46OoF-K"
+    url = f"https://drive.google.com/uc?id={file_id}"
+    output = "patient_vitals_24h.json"
 
-    data = response.json()
-    df = pd.DataFrame(data)
+    gdown.download(url, output, quiet=False)
+    
+    df = pd.read_json(output)
     df["timestamp"] = pd.to_datetime(df["timestamp"])
     return df
 
