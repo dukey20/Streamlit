@@ -6,8 +6,8 @@ from streamlit_autorefresh import st_autorefresh
 # Set page layout
 st.set_page_config(page_title="Patient Monitoring", layout="wide")
 
-# Auto refresh every 5 seconds
-st_autorefresh(interval=5000, key="refresh")
+# Auto refresh every 50 seconds
+st_autorefresh(interval=50000, key="refresh")
 
 # Load JSON data
 @st.cache_data(ttl=5)
